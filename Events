@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Event class to represent individual events
+class Event {
+    private String name;
+    private String date;
+
+    public Event(String name, String date) {
+        this.name = name;
+        this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
+}
+
+public class EventManager {
+    private List<Event> events;
+
+    public EventManager() {
+        this.events = new ArrayList<>();
+    }
+
+    public void addEvent(String name, String date) {
+        events.add(new Event(name, date));
+        System.out.println("Event added successfully!");
+    }
+
+    public void editEvent(int index, String name, String date) {
+        if (index >= 0 && index < events.size()) {
+            events.get(index).setName(name);
+            events.get(index).setDate(date);
+            System.out.println("Event edited successfully!");
+        } else {
+            System.out.println("Invalid event index!");
+        }
+    }
+
+    public void viewEvents() {
+        for (int i = 0; i < events.size(); i++) {
+            System.out.println("Event " + (i + 1) + ": " + events.get(i));
+        }
+    }
+
+    public void deleteEvent(int index) {
+        if (index >= 0 && index < events.size()) {
+            events.remove(index);
+            System.out.println("Event deleted successfully!");
+        } else {
+            System.out.println("Invalid event index!");
+        }
+    }
+
+    public static void main(String[] args) {
+        EventManager eventManager = new EventManager();
+        Scanner scanner = new Scanner(System.in);
+
+        // Sample usage
+        eventManager.addEvent("Meeting", "2024-04-15");
+        eventManager.addEvent("Party", "2024-04-20");
+        eventManager.viewEvents();
+
+        System.out.println("Enter the index of the event to edit:");
+        int index = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+        System.out.println("Enter the new name for the event:");
+        String name = scanner.nextLine();
+        System.out.println("Enter the new date for the event:");
+        String date = scanner.nextLine();
+        eventManager.editEvent(index - 1, name, date);
+
+        eventManager.viewEvents();
+
+        System.out.println("Enter the index of the event to delete:");
+        index = scanner.nextInt();
+        eventManager.deleteEvent(index - 1);
+
+        eventManager.viewEvents();
+
+        scanner.close();
+    }
+}
