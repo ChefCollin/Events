@@ -1,105 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+class EventScheduler:
+    def __init__(self):
+        self.events = []
 
-// Event class to represent individual events
-class Event {
-    private String name;
-    private String date;
+    def add_event(self, name, date, time):
+        self.events.append({'name': name, 'date': date, 'time': time})
+        print(f"Event '{name}' added on {date} at {time}")
 
-    public Event(String name, String date) {
-        this.name = name;
-        this.date = date;
-    }
+    def edit_event(self, index, name, date, time):
+        if 0 <= index < len(self.events):
+            self.events[index] = {'name': name, 'date': date, 'time': time}
+            print(f"Event at index {index} edited: '{name}' on {date} at {time}")
+        else:
+            print("Invalid index")
 
-    public String getName() {
-        return name;
-    }
+    def view_events(self):
+        if self.events:
+            print("Events:")
+            for i, event in enumerate(self.events):
+                print(f"{i}: {event['name']} on {event['date']} at {event['time']}")
+        else:
+            print("No events")
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    def delete_event(self, index):
+        if 0 <= index < len(self.events):
+            deleted_event = self.events.pop(index)
+            print(f"Event at index {index} deleted: '{deleted_event['name']}' on {deleted_event['date']} at {deleted_event['time']}")
+        else:
+            print("Invalid index")
 
-    public String getDate() {
-        return date;
-    }
+# Example usage
+scheduler = EventScheduler()
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+scheduler.add_event("Meeting", "2024-04-15", "14:00")
+scheduler.add_event("Presentation", "2024-04-16", "10:30")
+scheduler.view_events()
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "name='" + name + '\'' +
-                ", date='" + date + '\'' +
-                '}';
-    }
-}
+scheduler.edit_event(1, "Meeting", "2024-04-17", "09:00")
+scheduler.view_events()
 
-public class EventManager {
-    private List<Event> events;
-
-    public EventManager() {
-        this.events = new ArrayList<>();
-    }
-
-    public void addEvent(String name, String date) {
-        events.add(new Event(name, date));
-        System.out.println("Event added successfully!");
-    }
-
-    public void editEvent(int index, String name, String date) {
-        if (index >= 0 && index < events.size()) {
-            events.get(index).setName(name);
-            events.get(index).setDate(date);
-            System.out.println("Event edited successfully!");
-        } else {
-            System.out.println("Invalid event index!");
-        }
-    }
-
-    public void viewEvents() {
-        for (int i = 0; i < events.size(); i++) {
-            System.out.println("Event " + (i + 1) + ": " + events.get(i));
-        }
-    }
-
-    public void deleteEvent(int index) {
-        if (index >= 0 && index < events.size()) {
-            events.remove(index);
-            System.out.println("Event deleted successfully!");
-        } else {
-            System.out.println("Invalid event index!");
-        }
-    }
-
-    public static void main(String[] args) {
-        EventManager eventManager = new EventManager();
-        Scanner scanner = new Scanner(System.in);
-
-        // Sample usage
-        eventManager.addEvent("Meeting", "2024-04-15");
-        eventManager.addEvent("Party", "2024-04-20");
-        eventManager.viewEvents();
-
-        System.out.println("Enter the index of the event to edit:");
-        int index = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
-        System.out.println("Enter the new name for the event:");
-        String name = scanner.nextLine();
-        System.out.println("Enter the new date for the event:");
-        String date = scanner.nextLine();
-        eventManager.editEvent(index - 1, name, date);
-
-        eventManager.viewEvents();
-
-        System.out.println("Enter the index of the event to delete:");
-        index = scanner.nextInt();
-        eventManager.deleteEvent(index - 1);
-
-        eventManager.viewEvents();
-
-        scanner.close();
-    }
-}
+scheduler.delete_event(0)
+scheduler.view_events()
